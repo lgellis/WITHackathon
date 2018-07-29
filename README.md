@@ -22,6 +22,6 @@ Output to include not only predictions but recommendations (both to people and t
 
 - Incident codes - https://firemarshal.ks.gov/docs/default-source/kfirs/incident-type-cheat-sheet.pdf?sfvrsn=2
 
--Fire Data from http://firemarshal.ks.gov/agency-resources/KFIRS
+- Fire Data from http://firemarshal.ks.gov/agency-resources/KFIRS
 
--Weather Data from https://www.ncdc.noaa.gov/stormevents/
+- Weather Data from https://www.ncdc.noaa.gov/stormevents/

@@ -89,8 +89,21 @@ app.get('/api/forecast/daily', (req, res) => {
 })
 
 app.get('/api/alerts', (req, res) => {
-  var geocode = (req.query.geocode || '30.267153,-97.743057').split(',')
-  weatherAPI('/api/weather/v1/geocode/' + geocode[0] + '/' + geocode[1] + '/alerts.json', {
+  let queryURI = null
+  console.log('test')
+  console.log(req.query)
+  if ('geocode' in req.query) {
+    let geocode = (req.query.geocode || '30.267153,-97.743057').split(',')
+    queryURI = '/api/weather/v1/geocode/' + geocode[0] + '/' + geocode[1] + '/alerts.json?language=en-US'
+  } else if ('countryCode' in req.query && 'state' in req.query) {
+    let countryCode = (req.query.countryCode || 'US')
+    let state = (req.query.state || 'TX')
+    queryURI = '/api/weather/v1/country/' + countryCode + '/state/' + state + '/alerts.json?language=en-US'
+  } else if ('countryCode' in req.query) {
+    let countryCode = (req.query.countryCode || 'US')
+    queryURI = '/api/weather/v1/country/' + countryCode + '/alerts.json?language=en-US'
+  }
+  weatherAPI(queryURI, {
     language: req.query.language || 'en'
   }, function (err, result) {
     if (err) {
@@ -103,12 +116,27 @@ app.get('/api/alerts', (req, res) => {
   })
 })
 
+app.get('/api/alert/details', (req, res) => {
+  var key = (req.query.key)
+  weatherAPI('/api/weather/v1/alert/' + key + '/details.json?language=en-US', {
+    language: req.query.language || 'en'
+  }, function (err, result) {
+    if (err) {
+      console.log(err)
+      res.send(err).status(400)
+    } else {
+      console.log('Current alert details')
+      res.json(result)
+    }
+  })
+})
+
 app.get('/api/geolocation', (req, res) => {
-  var city = (req.query.city || 'Mountain%20View')
+  var city = (req.query.city || 'Austin')
   var type = (req.query.type || 'city')
-  var state = (req.query.state || 'MO')
+  var state = (req.query.state || 'TX')
   var country = (req.query.country || 'US')
-  weatherAPI('/api/weather/v3/location/search?query=' + city + '&locationType=' + type +
+  weatherAPI('/api/weather/v3/location/search?query=' + encodeURI(city) + '&locationType=' + type +
     '&adminDistrictCode=' + state + '&countryCode=' + country, {
     language: req.query.language || 'en'
   }, function (err, result) {

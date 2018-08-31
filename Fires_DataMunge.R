@@ -7,6 +7,7 @@ install.packages("caTools")
 install.packages("rpart")
 install.packages("rpart.plot")
 install.packages("GGally")
+install.packages("formattable")
 
 
 library(lubridate)
@@ -18,6 +19,7 @@ library(caTools)
 library(rpart)
 library(rpart.plot)
 library(GGally)
+library(formattable)
 
 
 
@@ -126,7 +128,7 @@ modelTable <- modelTable %>%
 summary(modelTable)
 head(modelTable)
 
-## missing some of the other totals we need.
+## Create Summary Table
 
 summaryFireData <- modelTable %>% 
   group_by(disasterFlag) %>%
@@ -148,24 +150,38 @@ summaryFireData <- modelTable %>%
             'Median Deaths In-Direct' = round(median(DEATHS_INDIRECT, na.rm = TRUE),2))
 
 formattable(summaryFireData)
-transpose <- as.data.frame(t(summaryFireData))
-names(transpose)<- c("Disaster", "No Disaster")
+transpose <- as.data.frame(t(summaryFireData), stringsAsFactors=FALSE)
+typeof(transpose)
+
+names(transpose)<- c("Disaster", "NoDisaster")
 transpose <- transpose[-1,]
 formattable(transpose)
 
-#add formatting with formattable
+
+transpose$Disaster<- as.numeric(transpose$Disaster)
+transpose$NoDisaster<- as.numeric(transpose$NoDisaster)
+
+summary(transNumeric)
+
+# Display Formatted Summary Table
+
+formattable(transpose, list(
+  Disaster = formatter(
+    "span",
+    style = ~ style(color = ifelse(Disaster>NoDisaster, "red", "black")),
+    ~ icontext(ifelse(Disaster>NoDisaster, "arrow-up", ""), Disaster))))
+
+
 
 ## Box plot - make multiple
 
 
-ggplot(modelTable, aes(x=disasterFlag, y=Acres_Burned, fill=disasterFlag)) + 
-  geom_boxplot(notch=TRUE) +
-  scale_fill_manual(values=c("#FF8000", "white")) +
-  labs(y = "Acres Burned for Disaster vs Not Disaster",
-       x = NULL) +
-  coord_flip()  +
+ggplot(modelTable, aes(x=disasterFlag, y=Loss_Total, fill=disasterFlag)) + 
+  geom_boxplot(notch=TRUE, outlier.size=1) +
+  scale_fill_manual(values=c("red", "white"), name = "Disaster Indicator") +
+  ggtitle("Analysis of Comparative Total Loss During Times of Disaster") +
+  labs(x = NULL, y = NULL) +
   theme_bw() + theme_minimal() 
-
 
 #Create the model table b/c these are all the columns we need to know
 

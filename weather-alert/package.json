@@ -1,0 +1,32 @@
+{
+  "name": "weather-alerts",
+  "version": "0.0.1",
+  "private": false,
+  "description": "A nodejs app for weather alerts using the Weather Company Data Service in IBM Cloud.",
+  "engines": {
+    "node": "8.11.*"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "dependencies": {
+    "cfenv": "^1.0.3",
+    "express": "~4.15.5",
+    "helmet": "^2.1.1",
+    "request": "^2.51.0"
+  },
+  "author": [
+    {
+      "name": "Robert Desbiens",
+      "email": "Robert.Desbiens@ca.ibm.com"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Trish Smith",
+      "email": "smith@ca.ibm.com"
+    }
+  ],
+  "license": "Apache License"
+}

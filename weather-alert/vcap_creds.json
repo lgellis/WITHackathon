@@ -1,0 +1,16 @@
+{
+  "weatherinsights": [
+    {
+      "name": "Weather Company Data for IBM Cloud",
+      "label": "weatherinsights",
+      "plan": "Free",
+      "credentials": {
+        "username": "c9ed9c78-68c3-4cf2-a4a7-923703681174",
+        "password": "orUr2bgTOy",
+        "host": "twcservice.mybluemix.net",
+        "port": 443,
+        "url": "https://c9ed9c78-68c3-4cf2-a4a7-923703681174:orUr2bgTOy@twcservice.mybluemix.net"
+      }
+    }
+  ]
+}

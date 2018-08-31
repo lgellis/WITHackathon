@@ -8,7 +8,7 @@
 #
 #install.packages("data.table")
 library(shiny)
-# library(data.table)
+library(data.table)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) {
